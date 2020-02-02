@@ -20,7 +20,7 @@ KEYWORDS=""
 IUSE="wayland gles2"
 
 DEPEND="
-media-libs/mesa[gles2? wayland?]
+media-libs/mesa[gles2?, wayland?]
 media-libs/libpng
 "
 RDEPEND="${DEPEND}"
