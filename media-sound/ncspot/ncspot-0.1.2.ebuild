@@ -402,7 +402,7 @@ DEPEND="
 virtual/rust
 sys-libs/ncurses
 sys-apps/dbus
-x11-libx/libxcb
+x11-libs/libxcb
 
 !libressl? ( dev-libs/openssl )
 libressl? ( dev-libs/libressl )

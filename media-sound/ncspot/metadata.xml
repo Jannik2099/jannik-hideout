@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM 'http://www.gentoo.org/dtd/metadata.dtd'>
+<pkgmetadata>
+	<maintainer type="person">
+		<email>jannik.glueckert@gmail.com</email>
+		<name>Jannik Glückert</name>
+	</maintainer>
+	<longdescription>ncurses spotify client</longdescription>
+</pkgmetadata>
