@@ -393,7 +393,7 @@ SRC_URI="https://github.com/hrkfdn/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 SRC_URI="$(cargo_crate_uris ${CRATES}) ${SRC_URI}"
 
-LICENSE="BSD2"
+LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="amd64 arm64"
 IUSE="portaudio libressl"
