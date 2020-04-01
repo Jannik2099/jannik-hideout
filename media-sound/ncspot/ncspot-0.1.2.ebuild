@@ -385,7 +385,7 @@ x11-clipboard-0.3.3
 xcb-0.8.2
 xi-unicode-0.2.0
 "
-inherit cargo
+inherit cargo flag-o-matic
 
 DESCRIPTION="ncurses Spotify client"
 HOMEPAGE="https://github.com/hrkfdn/ncspot"
@@ -419,5 +419,6 @@ src_configure() {
 	fi
 }
 src_compile() {
+	append-flags -ffat-lto-objects
 	cargo_src_compile
 }
