@@ -419,6 +419,8 @@ src_configure() {
 	fi
 }
 src_compile() {
-	append-flags -ffat-lto-objects
+	if is-flagq "-flto*"; then
+		append-flags -ffat-lto-objects
+	fi
 	cargo_src_compile
 }
