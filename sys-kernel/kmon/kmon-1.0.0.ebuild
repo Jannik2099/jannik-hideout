@@ -69,7 +69,7 @@ SLOT="0"
 KEYWORDS="amd64"
 IUSE=""
 
-DEPEND=""
+DEPEND="x11-libs/libxcb"
 RDEPEND="${DEPEND}
 sys-apps/kmod
 sys-apps/util-linux"
