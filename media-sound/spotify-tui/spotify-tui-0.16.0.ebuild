@@ -12,8 +12,8 @@ arrayref-0.3.5
 arrayvec-0.5.1
 atty-0.2.13
 autocfg-0.1.7
-backtrace-0.3.44
-backtrace-sys-0.1.32
+backtrace-0.3.45
+backtrace-sys-0.1.33
 base64-0.10.1
 base64-0.11.0
 bitflags-1.2.1
@@ -53,8 +53,8 @@ dtoa-0.4.4
 either-1.5.3
 encoding_rs-0.8.20
 env_logger-0.6.2
-failure-0.1.6
-failure_derive-0.1.6
+failure-0.1.7
+failure_derive-0.1.7
 fnv-1.0.6
 foreign-types-0.3.2
 foreign-types-shared-0.1.1
@@ -100,7 +100,10 @@ memchr-2.2.1
 mime-0.3.14
 mime_guess-2.0.1
 mio-0.6.21
+mio-named-pipes-0.1.6
+mio-uds-0.6.7
 miow-0.2.1
+miow-0.3.3
 native-tls-0.2.3
 net2-0.2.33
 nom-4.2.3
@@ -126,7 +129,7 @@ ppv-lite86-0.2.6
 proc-macro-hack-0.5.11
 proc-macro-nested-0.1.3
 proc-macro2-0.4.30
-proc-macro2-1.0.6
+proc-macro2-1.0.9
 quick-error-1.2.2
 quote-0.6.13
 quote-1.0.2
@@ -152,7 +155,7 @@ regex-1.3.1
 regex-syntax-0.6.12
 remove_dir_all-0.5.2
 reqwest-0.10.1
-rspotify-0.8.0
+rspotify-0.9.0
 rust-argon2-0.5.1
 rustc-demangle-0.1.16
 rustc-serialize-0.3.24
@@ -170,6 +173,7 @@ signal-hook-0.1.13
 signal-hook-registry-1.2.0
 slab-0.4.2
 smallvec-1.0.0
+socket2-0.3.11
 sourcefile-0.1.4
 strsim-0.7.0
 strsim-0.8.0
@@ -182,6 +186,7 @@ textwrap-0.11.0
 thread_local-0.3.6
 time-0.1.42
 tokio-0.2.11
+tokio-macros-0.2.5
 tokio-socks-0.2.0
 tokio-tls-0.3.0
 tokio-util-0.2.0
@@ -225,8 +230,7 @@ winreg-0.6.2
 ws2_32-sys-0.2.1
 x11-clipboard-0.3.3
 xcb-0.8.2
-yaml-rust-0.4.3
-"
+yaml-rust-0.4.3"
 inherit cargo flag-o-matic
 
 DESCRIPTION="Spotify for the terminal written in Rust"
@@ -235,13 +239,12 @@ SRC_URI="https://github.com/Rigellute/spotify-tui/archive/v${PV}.tar.gz -> ${P}.
 
 SRC_URI="$(cargo_crate_uris ${CRATES}) ${SRC_URI}"
 
-LICENSE="Apache-2.0"
+LICENSE="MIT"
 SLOT="0"
-KEYWORDS="amd64 x86 ~arm64"
+KEYWORDS="amd64 ~arm64"
 IUSE=""
 
 DEPEND="
-virtual/rust
 dev-libs/openssl
 x11-libs/libxcb
 "
@@ -249,6 +252,8 @@ RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 src_compile() {
-	append-cflags -ffat-lto-objects
+	if is-flagq "-flto*"; then
+		append-cflags -ffat-lto-objects
+	fi
 	cargo_src_compile
 }
