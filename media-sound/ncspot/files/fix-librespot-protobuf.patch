@@ -1,0 +1,40 @@
+diff --git a/cargo_home/gentoo/librespot-core-0.1.1/Cargo.toml b/cargo_home/gentoo/librespot-core-0.1.1/Cargo.toml
+index 1a0ebd7..f36a485 100644
+--- a/cargo_home/gentoo/librespot-core-0.1.1/Cargo.toml
++++ b/cargo_home/gentoo/librespot-core-0.1.1/Cargo.toml
+@@ -72,7 +72,7 @@ version = "0.2"
+ version = "0.3"
+ 
+ [dependencies.protobuf]
+-version = "2.8.1"
++version = "~2.8.1"
+ 
+ [dependencies.rand]
+ version = "0.7"
+diff --git a/cargo_home/gentoo/librespot-metadata-0.1.1/Cargo.toml b/cargo_home/gentoo/librespot-metadata-0.1.1/Cargo.toml
+index c957f8a..8860f4d 100644
+--- a/cargo_home/gentoo/librespot-metadata-0.1.1/Cargo.toml
++++ b/cargo_home/gentoo/librespot-metadata-0.1.1/Cargo.toml
+@@ -36,4 +36,4 @@ version = "1.2"
+ version = "0.4"
+ 
+ [dependencies.protobuf]
+-version = "2.8.1"
++version = "~2.8.1"
+diff --git a/cargo_home/gentoo/librespot-protocol-0.1.1/Cargo.toml b/cargo_home/gentoo/librespot-protocol-0.1.1/Cargo.toml
+index 96f0a1b..568ec1e 100644
+--- a/cargo_home/gentoo/librespot-protocol-0.1.1/Cargo.toml
++++ b/cargo_home/gentoo/librespot-protocol-0.1.1/Cargo.toml
+@@ -19,9 +19,9 @@ build = "build.rs"
+ description = "The protobuf logic for communicating with Spotify servers"
+ license = "MIT"
+ [dependencies.protobuf]
+-version = "2.8.1"
++version = "~2.8.1"
+ [build-dependencies.protobuf-codegen]
+-version = "2.8.1"
++version = "~2.8.1"
+ 
+ [build-dependencies.protobuf-codegen-pure]
+-version = "2.8.1"
++version = "~2.8.1"
