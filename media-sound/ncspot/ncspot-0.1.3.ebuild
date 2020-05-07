@@ -399,7 +399,7 @@ SRC_URI="$(cargo_crate_uris ${CRATES}) ${SRC_URI}"
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
-IUSE="|| ( pulseaudio portaudio ) libressl dbus"
+IUSE="pulseaudio portaudio libressl dbus"
 
 DEPEND="
 virtual/rust
