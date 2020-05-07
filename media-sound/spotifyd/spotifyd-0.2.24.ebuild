@@ -350,7 +350,7 @@ ws2_32-sys-0.2.1
 xdg-2.2.0
 "
 
-inherit cargo flag-o-matic
+inherit cargo
 
 DESCRIPTION="A spotify daemon"
 # Double check the homepage as the cargo_metadata crate
@@ -376,18 +376,9 @@ dbus?	( sys-apps/dbus )
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
-src_compile() {
-	use alsa && CARGO_FEATURES="alsa_backend"
-	use pulseaudio && CARGO_FEATURES="pulseaudio_backend,${CARGO_FEATURES}"
-	use portaudio && CARGO_FEATURES="portaudio_backend,${CARGO_FEATURES}"
-	use dbus && CARGO_FEATURES="dbus_keyring,dbus_mpris,${CARGO_FEATURES}"
-
-	is-flagq "-flto*" && append-flags "-ffat-lto-objects"
-
-	debug-print-function ${FUNCNAME} "$@"
-
-	export CARGO_HOME="${ECARGO_HOME}"
-
-	cargo build $(usex debug "" --release) --no-default-features --features "${CARGO_FEATURES}" "$@" \
-		|| die "cargo build failed"
+src_configure() {
+	use alsa && cargo_feature "alsa_backend"
+	use pulseaudio && cargo_feature "pulseaudio_backend"
+	use portaudio && cargo_feature "portaudio_backend"
+	use dbus && cargo_feature "dbus_keyring" && cargo_feature "dbus_mpris"
 }
