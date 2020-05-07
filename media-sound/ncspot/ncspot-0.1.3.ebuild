@@ -29,8 +29,8 @@ base64-0.10.1
 base64-0.11.0
 base64-0.9.3
 bindgen-0.53.2
-bit-set-0.5.1
-bit-vec-0.5.1
+bit-set-0.5.2
+bit-vec-0.6.2
 bitflags-0.3.3
 bitflags-0.9.1
 bitflags-1.2.1
@@ -121,7 +121,7 @@ generic-array-0.12.3
 getrandom-0.1.14
 glob-0.3.0
 h2-0.1.26
-h2-0.2.4
+h2-0.2.5
 heck-0.3.1
 hermit-abi-0.1.12
 hmac-0.7.1
@@ -179,6 +179,7 @@ mio-uds-0.6.8
 miow-0.2.1
 nalgebra-0.18.1
 native-tls-0.2.4
+ncspot-0.1.3
 ncurses-5.99.0
 net2-0.2.34
 nix-0.9.0
@@ -209,9 +210,9 @@ pdcurses-sys-0.7.1
 peeking_take_while-0.1.2
 percent-encoding-1.0.1
 percent-encoding-2.1.0
-pin-project-0.4.10
-pin-project-internal-0.4.10
-pin-project-lite-0.1.4
+pin-project-0.4.13
+pin-project-internal-0.4.13
+pin-project-lite-0.1.5
 pin-utils-0.1.0
 pkg-config-0.3.17
 portaudio-rs-0.3.1
@@ -224,9 +225,6 @@ proc-macro2-1.0.12
 protobuf-2.14.0
 protobuf-codegen-2.14.0
 protobuf-codegen-pure-2.14.0
-protobuf-2.8.1
-protobuf-codegen-2.8.1
-protobuf-codegen-pure-2.8.1
 publicsuffix-1.5.4
 quick-error-1.2.3
 quote-0.6.13
@@ -304,7 +302,7 @@ strum-0.17.1
 strum_macros-0.17.1
 subtle-1.0.0
 syn-0.15.44
-syn-1.0.18
+syn-1.0.19
 synstructure-0.12.3
 take-0.1.0
 tempfile-3.1.0
@@ -333,7 +331,7 @@ tokio-sync-0.1.8
 tokio-tcp-0.1.4
 tokio-threadpool-0.1.18
 tokio-timer-0.2.13
-tokio-tls-0.3.0
+tokio-tls-0.3.1
 tokio-udp-0.1.6
 tokio-uds-0.2.6
 tokio-util-0.3.1
@@ -354,7 +352,7 @@ url-1.7.2
 url-2.1.1
 uuid-0.7.4
 vcpkg-0.2.8
-vec_map-0.8.1
+vec_map-0.8.2
 vergen-3.1.0
 version_check-0.9.1
 void-1.0.2
@@ -384,7 +382,13 @@ x11-clipboard-0.3.3
 xcb-0.8.2
 xi-unicode-0.2.0
 "
-inherit cargo flag-o-matic
+CRATES="${CRATES}
+protobuf-2.8.1
+protobuf-codegen-2.8.1
+protobuf-codegen-pure-2.8.1
+"
+
+inherit cargo
 
 DESCRIPTION="ncurses Spotify client"
 HOMEPAGE="https://github.com/hrkfdn/ncspot"
@@ -395,19 +399,19 @@ SRC_URI="$(cargo_crate_uris ${CRATES}) ${SRC_URI}"
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
-IUSE="portaudio libressl"
+IUSE="|| ( pulseaudio portaudio ) libressl dbus"
 
 DEPEND="
 virtual/rust
 sys-libs/ncurses
-sys-apps/dbus
 x11-libs/libxcb
 
 !libressl? ( dev-libs/openssl )
 libressl? ( dev-libs/libressl )
 
-!portaudio? ( media-sound/pulseaudio )
+pulseaudio? ( media-sound/pulseaudio )
 portaudio? ( media-libs/portaudio )
+dbus? ( sys-apps/dbus )
 "
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
@@ -421,13 +425,11 @@ src_prepare() {
 }
 
 src_configure() {
-	if use portaudio; then
-		sed -i -e 's/\["share_clipboard", "pulseaudio_backend", "mpris", "cursive\/pancurses-backend"\]/\["share_clipboard", "portaudio_backend", "mpris", "cursive\/pancurses-backend"\]/' Cargo.toml
-	fi
-}
-src_compile() {
-	if is-flagq "-flto*"; then
-		append-flags -ffat-lto-objects
-	fi
-	cargo_src_compile
+	cargo_feature "cursive/pancurses-backend"
+	cargo_feature "share_clipboard"
+	cargo_feature "cursive/pancurses-backend"
+
+	use pulseaudio && cargo_feature "pulseaudio_backend"
+	use portaudio && cargo_feature "portaudio_backend"
+	use dbus && cargo_feature "mpris"
 }
