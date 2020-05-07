@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit cargo flag-o-matic
+inherit cargo
 
 CRATES="
 ansi_term-0.11.0
@@ -75,21 +75,8 @@ sys-apps/kmod
 sys-apps/util-linux"
 BDEPEND=""
 
-src_compile() {
-	if is-flagq "-flto*"; then
-		append-flags -ffat-lto-objects
-	fi
-	cargo_src_compile
-}
-
 src_install() {
-debug-print-function ${FUNCNAME} "$@"
+	cargo_src_install
 
-	cargo install --path ${CARGO_INSTALL_PATH} \
-		--root="${ED}/usr" $(usex debug --debug "") "$@" \
-		|| die "cargo install failed"
-	rm -f "${ED}/usr/.crates.toml"
-	rm -f "${ED}/usr/.crates2.json"
-
-	doman "${S}/man/kmon.8"
+	doman "man/kmon.8" || die
 }
