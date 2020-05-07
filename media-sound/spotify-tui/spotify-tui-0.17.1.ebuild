@@ -230,7 +230,7 @@ xcb-0.8.2
 yaml-rust-0.4.3
 "
 
-inherit cargo flag-o-matic
+inherit cargo
 
 DESCRIPTION="A terminal user interface for Spotify"
 # Double check the homepage as the cargo_metadata crate
@@ -255,9 +255,4 @@ BDEPEND="virtual/pkgconfig"
 src_prepare() {
 	cp "${FILESDIR}/${PV}-Cargo.lock" "${S}/Cargo.lock"
 	default
-}
-
-src_compile() {
-	is-flagq "-flto*" && append-flags "-ffat-lto-objects"
-	cargo_src_compile
 }
