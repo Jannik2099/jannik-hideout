@@ -21,7 +21,7 @@ case ${EAPI} in
 	*) die "EAPI=${EAPI:-0} is not supported" ;;
 esac
 
-inherit multiprocessing
+inherit multiprocessing flag-o-matic
 
 EXPORT_FUNCTIONS src_unpack src_compile src_install src_test
 
@@ -177,6 +177,8 @@ cargo_feature_configure() {
 # Build the package using cargo build
 cargo_src_compile() {
 	cargo_feature_configure
+
+	is-flagq "-flto*" && append-flags "-ffat-lto-objects"
 
 	debug-print-function ${FUNCNAME} "$@"
 
