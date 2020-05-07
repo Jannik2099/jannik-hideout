@@ -199,8 +199,6 @@ cargo_src_install() {
 		|| die "cargo install failed"
 	rm -f "${ED}/usr/.crates.toml"
 	rm -f "${ED}/usr/.crates2.json"
-
-	[ -d "${S}/man" ] && doman "${S}/man/*" || return 0
 }
 
 # @FUNCTION: cargo_src_test
