@@ -10,11 +10,11 @@ inherit python-any-r1
 inherit waf-utils
 inherit git-r3
 
-DESCRIPTION=""
-HOMEPAGE=""
+DESCRIPTION="glmark2 is an OpenGL 2.0 and ES 2.0 benchmark "
+HOMEPAGE="https://github.com/glmark2/glmark2"
 EGIT_REPO_URI="https://github.com/glmark2/glmark2.git"
 
-LICENSE=""
+LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
 IUSE="wayland gles2"
