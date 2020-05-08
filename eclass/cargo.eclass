@@ -163,10 +163,10 @@ cargo_feature() {
 	fi
 }
 
-# @FUNCTION: cargo_feature_configure
+# @FUNCTION: cargo_src_configure
 # @DESCRIPTION:
-# Configure the crate features
-cargo_feature_configure() {
+# Apply the selected features
+cargo_src_configure() {
 	if ! [ -z "${CARGO_FEATURES}" ]; then
 		CARGO_FEATURES="--no-default-features --features ${CARGO_FEATURES}"
 	fi
@@ -176,8 +176,6 @@ cargo_feature_configure() {
 # @DESCRIPTION:
 # Build the package using cargo build
 cargo_src_compile() {
-	cargo_feature_configure
-
 	is-flagq "-flto*" && append-flags "-ffat-lto-objects"
 
 	debug-print-function ${FUNCNAME} "$@"

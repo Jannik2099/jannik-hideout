@@ -381,4 +381,6 @@ src_configure() {
 	use pulseaudio && cargo_feature "pulseaudio_backend"
 	use portaudio && cargo_feature "portaudio_backend"
 	use dbus && cargo_feature "dbus_keyring" && cargo_feature "dbus_mpris"
+
+	cargo_src_configure
 }
