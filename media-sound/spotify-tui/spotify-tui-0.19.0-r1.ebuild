@@ -252,7 +252,7 @@ RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 src_prepare() {
-	cp "${FILESDIR}/${P}-Cargo.lock" Cargo.lock
+	unxz --stdout "${FILESDIR}/${P}-Cargo.lock" > Cargo.lock
 	cd "${WORKDIR}"
 	patch -p1 < "${FILESDIR}/${P}-fix-rspotify-1.patch"
 	cd 'cargo_home/gentoo/rspotify-0.9.0'

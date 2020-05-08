@@ -253,6 +253,6 @@ RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 src_prepare() {
-	cp "${FILESDIR}/${PV}-Cargo.lock" "${S}/Cargo.lock"
+	unxz --stdout "${FILESDIR}/${PV}-Cargo.lock.xz" > "${S}/Cargo.lock"
 	default
 }
