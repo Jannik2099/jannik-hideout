@@ -406,8 +406,8 @@ virtual/rust
 sys-libs/ncurses
 x11-libs/libxcb
 
-!libressl? ( dev-libs/openssl )
-libressl? ( dev-libs/libressl )
+!libressl? ( dev-libs/openssl:0= )
+libressl? ( dev-libs/libressl:0= )
 
 pulseaudio? ( media-sound/pulseaudio )
 portaudio? ( media-libs/portaudio )

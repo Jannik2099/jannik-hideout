@@ -245,7 +245,7 @@ KEYWORDS="~amd64 ~arm64"
 IUSE=""
 
 DEPEND="
-dev-libs/openssl
+dev-libs/openssl:0=
 x11-libs/libxcb
 "
 RDEPEND="${DEPEND}"
