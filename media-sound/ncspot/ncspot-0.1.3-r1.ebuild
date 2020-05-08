@@ -417,7 +417,7 @@ RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 src_prepare() {
-	cp "${FILESDIR}/${P}-Cargo.lock" Cargo.lock
+	unxz --stdout "${FILESDIR}/${P}-Cargo.lock.xz" > Cargo.lock
 	cd "${WORKDIR}"
 	patch -p1 < "${FILESDIR}/fix-librespot-protobuf.patch"
 	cd "${S}"
