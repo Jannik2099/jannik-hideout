@@ -41,4 +41,3 @@ src_configure() {
 
 	waf-utils_src_configure "--with-flavors=${FLAVORS}"
 }
-
