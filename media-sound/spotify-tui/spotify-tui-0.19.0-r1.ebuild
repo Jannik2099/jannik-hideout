@@ -241,7 +241,7 @@ RESTRICT="mirror"
 # use cargo-license for a more accurate license picture
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64"
+KEYWORDS="amd64 arm64"
 IUSE=""
 
 DEPEND="
