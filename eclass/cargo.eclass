@@ -16,14 +16,13 @@ _CARGO_ECLASS=1
 RUST_DEPEND=">=virtual/rust-1.37.0"
 
 case ${EAPI} in
-	6) DEPEND="${RUST_DEPEND}";;
 	7) BDEPEND="${RUST_DEPEND}";;
 	*) die "EAPI=${EAPI:-0} is not supported" ;;
 esac
 
-inherit multiprocessing flag-o-matic
+inherit multiprocessing toolchain-funcs
 
-EXPORT_FUNCTIONS src_unpack src_compile src_install src_test
+EXPORT_FUNCTIONS src_unpack src_configure src_compile src_install src_test
 
 IUSE="${IUSE} debug"
 
@@ -34,6 +33,24 @@ ECARGO_VENDOR="${ECARGO_HOME}/gentoo"
 # @DESCRIPTION:
 # Allows overriding the default cwd to run cargo install from
 : ${CARGO_INSTALL_PATH:=.}
+
+# @VARIABLE: myfeatures
+# @DEFAULT_UNSET
+# @DESCRIPTION:
+# Optional cargo features defined as bash array. Should be defined before calling
+# src_configure.
+# Example for package that has x11 and wayland as features.
+# Also disables default features, as optional parameter is passed.
+# @CODE
+# src_configure() {
+# 	local myfeatures=(
+#		$(usex X x11 '')
+# 		$(usev wayland)
+# 	)
+#
+# 	cargo_src_configure --no-default-features
+# }
+# @CODE
 
 # @FUNCTION: cargo_crate_uris
 # @DESCRIPTION:
@@ -113,6 +130,7 @@ cargo_live_src_unpack() {
 	mkdir -p "${S}" || die
 
 	pushd "${S}" > /dev/null || die
+	# need to specify CARGO_HOME before cargo_gen_config fired
 	CARGO_HOME="${ECARGO_HOME}" cargo fetch || die
 	CARGO_HOME="${ECARGO_HOME}" cargo vendor "${ECARGO_VENDOR}" || die
 	popd > /dev/null || die
@@ -152,37 +170,37 @@ cargo_gen_config() {
 	EOF
 	# honor NOCOLOR setting
 	[[ "${NOCOLOR}" = true || "${NOCOLOR}" = yes ]] && echo "color = 'never'" >> "${ECARGO_HOME}/config"
-}
 
-# @FUNCTION: cargo_feature
-# @DESCRIPTION:
-# Enable a crate feature
-cargo_feature() {
-	if ! [ -z ${1} ]; then
-		CARGO_FEATURES="${1},${CARGO_FEATURES}"
-	fi
+	export CARGO_HOME="${ECARGO_HOME}"
 }
 
 # @FUNCTION: cargo_src_configure
 # @DESCRIPTION:
-# Apply the selected features
+# Configure cargo package features
 cargo_src_configure() {
-	if ! [ -z "${CARGO_FEATURES}" ]; then
-		CARGO_FEATURES="--no-default-features --features ${CARGO_FEATURES}"
+	debug-print-function ${FUNCNAME} "$@"
+
+	[[ -z ${myfeatures} ]] && declare -a myfeatures=()
+	local myfeaturestype=$(declare -p myfeatures 2>&-)
+	if [[ "${myfeaturestype}" != "declare -a myfeatures="* ]]; then
+		die "myfeatures must be declared as array"
 	fi
+
+	# transform array from simple feature list
+	# to multiple cargo args:
+	# --features feature1 --features feature2 ...
+	readonly ECARGO_FEATURES=( ${myfeatures[@]/#/--features } ${@} )
 }
 
 # @FUNCTION: cargo_src_compile
 # @DESCRIPTION:
 # Build the package using cargo build
 cargo_src_compile() {
-	is-flagq "-flto*" && append-flags "-ffat-lto-objects"
-
 	debug-print-function ${FUNCNAME} "$@"
 
-	export CARGO_HOME="${ECARGO_HOME}"
+	tc-export AR CC
 
-	cargo build $(usex debug "" --release) ${CARGO_FEATURES} "$@" \
+	cargo build $(usex debug "" --release) ${ECARGO_FEATURES[@]} "$@" \
 		|| die "cargo build failed"
 }
 
@@ -192,11 +210,13 @@ cargo_src_compile() {
 cargo_src_install() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	cargo install --path ${CARGO_INSTALL_PATH} \
-		--root="${ED}/usr" $(usex debug --debug "") ${CARGO_FEATURES} "$@" \
+	cargo install --path ${CARGO_INSTALL_PATH} --root="${ED}/usr" \
+		$(usex debug --debug "") ${ECARGO_FEATURES[@]} "$@" \
 		|| die "cargo install failed"
 	rm -f "${ED}/usr/.crates.toml"
 	rm -f "${ED}/usr/.crates2.json"
+
+	#[ -d "${S}/man" ] && doman "${S}/man" || return 0
 }
 
 # @FUNCTION: cargo_src_test
@@ -205,7 +225,7 @@ cargo_src_install() {
 cargo_src_test() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	cargo test $(usex debug "" --release) ${CARGO_FEATURES} "$@" \
+	cargo test $(usex debug "" --release) ${ECARGO_FEATURES[@]} "$@" \
 		|| die "cargo test failed"
 }
 

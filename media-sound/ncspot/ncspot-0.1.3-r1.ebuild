@@ -388,7 +388,7 @@ protobuf-codegen-2.8.1
 protobuf-codegen-pure-2.8.1
 "
 
-inherit cargo
+inherit cargo flag-o-matic
 
 DESCRIPTION="ncurses Spotify client"
 HOMEPAGE="https://github.com/hrkfdn/ncspot"
@@ -417,7 +417,8 @@ RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 src_prepare() {
-	unxz --stdout "${FILESDIR}/${P}-Cargo.lock.xz" > Cargo.lock
+	#unxz --stdout "${FILESDIR}/${P}-Cargo.lock.xz" > Cargo.lock
+	rm Cargo.lock
 	cd "${WORKDIR}"
 	patch -p1 < "${FILESDIR}/fix-librespot-protobuf.patch"
 	cd "${S}"
@@ -425,13 +426,16 @@ src_prepare() {
 }
 
 src_configure() {
-	cargo_feature "cursive/pancurses-backend"
-	cargo_feature "share_clipboard"
-	cargo_feature "cursive/pancurses-backend"
+	is-flagq "-flto*" && append-flags "-ffat-lto-objects"
 
-	use pulseaudio && cargo_feature "pulseaudio_backend"
-	use portaudio && cargo_feature "portaudio_backend"
-	use dbus && cargo_feature "mpris"
+	local myfeatures=(
+	cursive/pancurses-backend
+	share_clipboard
+	cursive/pancurses-backend
 
-	cargo_src_configure
+	$(usex pulseaudio pulseaudio_backend '')
+	$(usex portaudio portaudio_backend '')
+	$(usex dbus mpris '')
+	)
+	cargo_src_configure --no-default-features
 }

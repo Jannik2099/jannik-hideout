@@ -245,7 +245,7 @@ RESTRICT="mirror"
 # use cargo-license for a more accurate license picture
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64"
+KEYWORDS="amd64 arm64"
 IUSE=""
 
 DEPEND="
@@ -255,9 +255,7 @@ x11-libs/libxcb
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
-
 src_prepare() {
 	rm "${S}/Cargo.lock"
-
 	default
 }
