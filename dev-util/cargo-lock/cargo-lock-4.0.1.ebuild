@@ -48,9 +48,9 @@ IUSE=""
 DEPEND=""
 RDEPEND=""
 
-PATCHES="${FILESDIR}/disable-self-V2.patch"
+#PATCHES="${FILESDIR}/disable-self-V2.patch"
 
 src_prepare() {
-	cp "${FILESDIR}/${P}-Cargo.lock" Cargo.lock
+	rm Cargo.lock
 	default
 }
