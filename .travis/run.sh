@@ -64,6 +64,6 @@ for ebuild in ${FILES}; do
 	docker run --mount type=bind,src=${distpath},dst=/var/cache/distfiles \
 	--rm --name "${name}" dev \
 	/bin/bash -c "emerge -ou ${atom} && export FEATURES=test && emerge --quiet n ${atom}" || \
-	echo "ERROR: ${atom} failed" && exit 1
+	$(echo "ERROR: ${atom} failed" && exit 1)
 	#ARCH2 runs not implemented yet
 done
