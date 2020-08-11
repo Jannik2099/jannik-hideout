@@ -10,7 +10,7 @@ branches:
         - master
 #Doing this via envs may seem weird, but it makes maintenance and workarounds easier and avoids code duplication
 env:
-        - PACKAGE=dev-util/cargo-ebuild
+        - PACKAGE=dev-util/cargo-lock
         - PACKAGE=games-util/multimc5
         - PACKAGE=media-sound/ncspot
         - PACKAGE=media-sound/spotifyd
