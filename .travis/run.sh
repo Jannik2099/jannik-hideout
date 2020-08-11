@@ -44,6 +44,7 @@ function iskeyword(){
 	fi
 }
 
+REPONAME="jannik-hideout"
 mkdir -p .tmpfiles/distfiles
 tar cf .travis/overlay.tar .
 echo \
