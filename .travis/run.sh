@@ -58,8 +58,9 @@ for ebuild in ${FILES}; do
         atom=${atom%.ebuild}
         name=$(basename ${ebuild})
         name=${name%.ebuild}
+	distpath=$(readlink -f .tmpfiles/distfiles)
 	iskeyword "${ebuild}" ${ARCH1} && \
-	docker run --mount type=bind,src=.tmpfiles/distfiles/,dst=/var/cache/distfiles \
+	docker run --mount type=bind,src=${distpath},dst=/var/cache/distfiles \
 	--rm --name "${name}" dev \
 	/bin/bash -c "emerge -ou ${atom} && export FEATURES=test && emerge --quiet n ${atom}" || \
 	echo "ERROR: ${atom} failed" && exit 1
