@@ -25,14 +25,14 @@ case ${TRAVIS_CPU_ARCH} in
 		#ARCH1="s390"
 		#;;
 	*)
-		echo "ERROR: unknown TRAVIS_CPU_ARCH: ${TRAVIS_CPU_ARCH}, exiting"
+		echo "ERROR: unknown TRAVIS_CPU_ARCH: ${TRAVIS_CPU_ARCH}"
 		exit 1
 		;;
 esac
 
 FILES=$(git --no-pager diff --name-only --diff-filter=ACM "${TRAVIS_BRANCH}"...HEAD | grep -e "${PACKAGE}.*\.ebuild")
 if [ "${FILES}" = "" ]; then
-	echo "INFO: ${PACKAGE} not modified, exiting"
+	echo "SUCCESS: ${PACKAGE} not modified"
 	exit 0
 fi
 
@@ -44,7 +44,7 @@ function iskeyword(){
 	fi
 }
 
-REPONAME="jannik-hideout"
+REPONAME=$(basename "$(readlink -f .)")
 mkdir -p .tmpfiles/distfiles
 tar cf .travis/overlay.tar .
 echo \
@@ -53,17 +53,32 @@ location = /var/db/repos/${REPONAME}
 priority = 100
 masters = gentoo
 auto-sync = no" > ".travis/overlay.conf"
-docker build --build-arg REPOPATH="/var/db/repos/${REPONAME}" -t dev .travis
+if docker build --build-arg REPOPATH="/var/db/repos/${REPONAME}" -t dev .travis; then
+	echo "INFO: runner for ${REPONAME} ready"
+else
+	echo "ERROR: failed to build runner for ${REPONAME}"
+	exit 1
+fi
+
 for ebuild in ${FILES}; do
-	atom="=$(dirname $(dirname ${ebuild}))/$(basename ${ebuild})"
+	atom="=$(dirname "$(dirname "${ebuild}")")/$(basename "${ebuild}")"
         atom=${atom%.ebuild}
-        name=$(basename ${ebuild})
+        name=$(basename "${ebuild}")
         name=${name%.ebuild}
 	distpath=$(readlink -f .tmpfiles/distfiles)
-	iskeyword "${ebuild}" ${ARCH1} && \
-	docker run --mount type=bind,src=${distpath},dst=/var/cache/distfiles \
-	--rm --name "${name}" dev \
-	/bin/bash -c "emerge -ou ${atom} && export FEATURES=test && emerge --quiet n ${atom}" || \
-	$(echo "ERROR: ${atom} failed" && exit 1)
+	if iskeyword "${ebuild}" "${ARCH1}"; then
+		if docker run --mount type=bind,src="${distpath}",dst=/var/cache/distfiles \
+		--rm --name "${name}" dev \
+		/bin/bash -c "emerge -ou ${atom} && export FEATURES=test && emerge -f ${atom} && emerge --quiet n ${atom}"; then
+			echo "INFO: ${atom} passed"
+		else
+			echo "ERROR: ${atom} failed"
+			exit 1
+		fi
+	else
+		echo "INFO: ${atom} not keyworded for ${ARCH1}"
+	fi
 	#ARCH2 runs not implemented yet
 done
+
+echo "SUCCESS: ${PACKAGE} passed"
