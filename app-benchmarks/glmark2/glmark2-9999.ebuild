@@ -16,15 +16,13 @@ EGIT_REPO_URI="https://github.com/glmark2/glmark2.git"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS=""
 IUSE="wayland gles2"
 
 DEPEND="
-media-libs/mesa[gles2?,wayland?]
-media-libs/libpng
+	media-libs/mesa[gles2?,wayland?]
+	media-libs/libpng
 "
 RDEPEND="${DEPEND}"
-BDEPEND=""
 FLAVORS="drm-gl,x11-gl"
 
 src_configure() {

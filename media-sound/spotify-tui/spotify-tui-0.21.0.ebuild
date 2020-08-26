@@ -240,26 +240,21 @@ yaml-rust-0.4.3
 inherit cargo
 
 DESCRIPTION="A terminal user interface for Spotify"
-# Double check the homepage as the cargo_metadata crate
-# does not provide this value so instead repository is used
 HOMEPAGE="https://github.com/Rigellute/spotify-tui"
 SRC_URI="$(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
-# License set may be more restrictive as OR is not respected
-# use cargo-license for a more accurate license picture
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
-IUSE=""
 
 DEPEND="
-dev-libs/openssl:0=
-x11-libs/libxcb
+	dev-libs/openssl:0=
+	x11-libs/libxcb
 "
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 src_prepare() {
-	rm "${S}/Cargo.lock"
+	rm "${S}/Cargo.lock" || die
 	default
 }

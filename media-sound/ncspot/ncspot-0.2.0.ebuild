@@ -415,26 +415,27 @@ KEYWORDS="amd64 arm64"
 IUSE="pulseaudio portaudio libressl dbus"
 
 DEPEND="
-virtual/rust
-sys-libs/ncurses
-x11-libs/libxcb
+	virtual/rust
+	sys-libs/ncurses
+	x11-libs/libxcb
 
-!libressl? ( dev-libs/openssl:0= )
-libressl? ( dev-libs/libressl:0= )
+	!libressl? ( dev-libs/openssl:0= )
+	libressl? ( dev-libs/libressl:0= )
 
-pulseaudio? ( media-sound/pulseaudio )
-portaudio? ( media-libs/portaudio )
-dbus? ( sys-apps/dbus )
+	pulseaudio? ( media-sound/pulseaudio )
+	portaudio? ( media-libs/portaudio )
+
+	dbus? ( sys-apps/dbus )
 "
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 src_prepare() {
-	rm Cargo.lock
-	cd "${WORKDIR}"
+	rm Cargo.lock || die
+	cd "${WORKDIR}" || die
 	#patch for https://github.com/librespot-org/librespot/issues/460
 	patch -p1 < "${FILESDIR}/fix-librespot-protobuf.patch"
-	cd "${S}"
+	cd "${S}" || die
 	default
 }
 
