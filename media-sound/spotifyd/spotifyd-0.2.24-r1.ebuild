@@ -366,12 +366,13 @@ KEYWORDS="~amd64 ~arm64"
 IUSE="alsa pulseaudio portaudio dbus"
 
 DEPEND="
-dev-libs/openssl:0=
+	dev-libs/openssl:0=
 
-alsa?	( media-libs/alsa-lib )
-pulseaudio?	( media-sound/pulseaudio )
-portaudio?	( media-libs/portaudio )
-dbus?	( sys-apps/dbus )
+	alsa?	( media-libs/alsa-lib )
+	pulseaudio?	( media-sound/pulseaudio )
+	portaudio?	( media-libs/portaudio )
+
+	dbus?	( sys-apps/dbus )
 "
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"

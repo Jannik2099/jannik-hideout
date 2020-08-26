@@ -61,12 +61,11 @@ SRC_URI="$(cargo_crate_uris ${CRATES}) ${SRC_URI}"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="amd64"
-IUSE=""
 
 DEPEND="x11-libs/libxcb"
 RDEPEND="${DEPEND}
-sys-apps/kmod
-sys-apps/util-linux"
+	sys-apps/kmod
+	sys-apps/util-linux"
 BDEPEND=""
 
 src_install() {

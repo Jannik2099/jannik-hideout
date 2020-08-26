@@ -51,15 +51,15 @@ PATCHES=(
 
 src_unpack(){
 	default
-	rm -rf "${S}/libraries/libnbtplusplus" "${S}/libraries/quazip"
+	rm -rf "${S}/libraries/libnbtplusplus" "${S}/libraries/quazip" || die
 	mv "${WORKDIR}/libnbtplusplus-${LIBNBTPLUSPLUS_VER}" "${S}/libraries/libnbtplusplus" || die
 	mv "${WORKDIR}/quazip-${QUAZIP_VER}" "${S}/libraries/quazip" || die
 }
 
 src_prepare(){
-	cd libraries/quazip
+	cd libraries/quazip || die
 	eapply "${FILESDIR}/quazip-fix-build-with-qt-511.patch"
-	cd ../..
+	cd ../.. || die
 	cmake-utils_src_prepare
 }
 
