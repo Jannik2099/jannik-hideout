@@ -8,12 +8,10 @@ dist: focal
 branches:
         only:
         - master
-jobs:
-    include:
-        - stage: "Build"
-        - script: .travis/run.sh --package dev-util/cargo-lock
-        - script: .travis/run.sh --package games-util/multimc5
-        - script: .travis/run.sh --package media-sound/ncspot
-        - script: .travis/run.sh --package media-sound/spotifyd
-        - script: .travis/run.sh --package media-sound/spotify-tui
-        - script: .travis/run.sh --package sys-kernel/kmon
+
+script: .travis/run.sh --package dev-util/cargo-lock
+script: .travis/run.sh --package games-util/multimc5
+script: .travis/run.sh --package media-sound/ncspot
+script: .travis/run.sh --package media-sound/spotifyd
+script: .travis/run.sh --package media-sound/spotify-tui
+script: .travis/run.sh --package sys-kernel/kmon
