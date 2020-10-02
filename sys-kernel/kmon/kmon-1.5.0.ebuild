@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit cargo
+inherit cargo virtualx
 
 CRATES="
 ansi_term-0.11.0
@@ -11,42 +11,42 @@ atty-0.2.14
 autocfg-1.0.0
 bitflags-1.2.1
 block-0.1.6
-bytesize-1.0.0
+bytesize-1.0.1
 cassowary-0.3.0
 cfg-if-0.1.10
-clap-2.33.0
+clap-2.33.3
 clipboard-0.5.0
 clipboard-win-2.2.0
-colorsys-0.5.3
-either-1.5.3
-enum-iterator-0.5.0
-enum-iterator-derive-0.5.0
-enum-unitary-0.4.1
-hermit-abi-0.1.10
+colorsys-0.5.4
+either-1.6.0
+enum-iterator-0.6.0
+enum-iterator-derive-0.6.0
+enum-unitary-0.4.2
+hermit-abi-0.1.15
 itertools-0.8.2
-kmon-1.2.0
-libc-0.2.68
-log-0.4.8
+kmon-1.5.0
+libc-0.2.73
+log-0.4.11
 malloc_buf-0.0.6
-num-traits-0.2.11
+num-traits-0.2.12
 numtoa-0.1.0
 objc-0.2.7
 objc-foundation-0.1.1
 objc_id-0.1.1
-proc-macro2-1.0.10
-quote-1.0.3
-redox_syscall-0.1.56
+proc-macro2-1.0.19
+quote-1.0.7
+redox_syscall-0.1.57
 redox_termios-0.1.1
 strsim-0.8.0
-syn-1.0.17
+syn-1.0.35
 termion-1.5.5
 textwrap-0.11.0
 tui-0.8.0
 unicode-segmentation-1.6.0
-unicode-width-0.1.7
-unicode-xid-0.2.0
-vec_map-0.8.1
-winapi-0.3.8
+unicode-width-0.1.8
+unicode-xid-0.2.1
+vec_map-0.8.2
+winapi-0.3.9
 winapi-i686-pc-windows-gnu-0.4.0
 winapi-x86_64-pc-windows-gnu-0.4.0
 x11-clipboard-0.3.3
@@ -60,13 +60,17 @@ SRC_URI="$(cargo_crate_uris ${CRATES}) ${SRC_URI}"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="amd64"
+KEYWORDS="~amd64 ~arm64"
 
 DEPEND="x11-libs/libxcb"
 RDEPEND="${DEPEND}
 	sys-apps/kmod
 	sys-apps/util-linux"
 BDEPEND=""
+
+src_install() {
+	virtx cargo_src_test
+}
 
 src_install() {
 	cargo_src_install

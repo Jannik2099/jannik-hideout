@@ -60,7 +60,7 @@ SRC_URI="$(cargo_crate_uris ${CRATES}) ${SRC_URI}"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 
 DEPEND="x11-libs/libxcb"
 RDEPEND="${DEPEND}
