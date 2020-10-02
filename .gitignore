@@ -1,0 +1,3 @@
+.tmpfiles
+.travis/overlay.tar
+.travis/overlay.conf

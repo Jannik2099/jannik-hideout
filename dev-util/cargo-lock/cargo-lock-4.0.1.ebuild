@@ -34,23 +34,14 @@ url-2.1.1
 inherit cargo
 
 DESCRIPTION="Self-contained Cargo.lock parser with optional dependency graph analysis"
-# Double check the homepage as the cargo_metadata crate
-# does not provide this value so instead repository is used
 HOMEPAGE="https://github.com/rustsec/cargo-lock"
 SRC_URI="$(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
-# License set may be more restrictive as OR is not respected
-# use cargo-license for a more accurate license picture
 LICENSE="|| ( Apache-2.0 MIT )"
 SLOT="0"
 KEYWORDS="amd64"
-IUSE=""
-DEPEND=""
-RDEPEND=""
-
-#PATCHES="${FILESDIR}/disable-self-V2.patch"
 
 src_prepare() {
-	rm Cargo.lock
+	rm Cargo.lock || die
 	default
 }
