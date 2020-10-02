@@ -425,6 +425,7 @@ DEPEND="
 	virtual/rust
 	sys-libs/ncurses
 	x11-libs/libxcb
+	sys-apps/dbus
 
 	!libressl? ( dev-libs/openssl:0= )
 	libressl? ( dev-libs/libressl:0= )
@@ -432,7 +433,6 @@ DEPEND="
 	pulseaudio? ( media-sound/pulseaudio )
 	portaudio? ( media-libs/portaudio )
 
-	dbus? ( sys-apps/dbus )
 "
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
@@ -444,10 +444,10 @@ src_configure() {
 	cursive/pancurses-backend
 	share_clipboard
 	cursive/pancurses-backend
+	mpris
 
 	$(usex pulseaudio pulseaudio_backend '')
 	$(usex portaudio portaudio_backend '')
-	$(usex dbus mpris '')
 	)
 	cargo_src_configure --no-default-features
 }
