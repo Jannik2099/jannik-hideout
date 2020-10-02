@@ -1,18 +1,19 @@
+language: minimal
 services: docker
 arch:
         - amd64
         - arm64
 os: linux
-dist: bionic
+dist: focal
 branches:
         only:
         - master
-#Doing this via envs may seem weird, but it makes maintenance and workarounds easier and avoids code duplication
-env:
-        - PACKAGE=dev-util/cargo-ebuild
-        - PACKAGE=games-util/multimc5
-        - PACKAGE=media-sound/ncspot
-        - PACKAGE=media-sound/spotifyd
-        - PACKAGE=media-sound/spotify-tui
-        - PACKAGE=sys-kernel/kmon
-script: .travis/run.sh
+jobs:
+    include:
+        - stage: "Build"
+        - script: .travis/run.sh --package dev-util/cargo-ebuild
+        - script: .travis/run.sh --package games-util/multimc5
+        - script: .travis/run.sh --package media-sound/ncspot
+        - script: .travis/run.sh --package media-sound/spotifyd
+        - script: .travis/run.sh --package media-sound/spotify-tui
+        - script: .travis/run.sh --package sys-kernel/kmon
