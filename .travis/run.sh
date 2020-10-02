@@ -1,24 +1,6 @@
 #!/bin/bash
-options=$(getopt -o '' --long package:,notests -- "${@}")
-eval set -- "${options}"
 
 TESTS="test"
-while true; do
-	case "${1}" in
-		--package)
-			shift
-			PACKAGE="${1}"
-			;;
-		--notests)
-			TESTS="-test"
-			;;
-		--)
-			shift
-			break
-			;;
-	esac
-	shift
-done
 
 if ! test -d "${PACKAGE}"; then
 	echo "WARNING: ${PACKAGE} not found in repository"
