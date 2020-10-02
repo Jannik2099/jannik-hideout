@@ -250,6 +250,7 @@ KEYWORDS="amd64 arm64"
 DEPEND="
 	dev-libs/openssl:0=
 	x11-libs/libxcb
+	sys-apps/dbus
 "
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
