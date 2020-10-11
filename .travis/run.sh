@@ -77,7 +77,7 @@ for ebuild in ${FILES}; do
         name=$(basename "${ebuild}")
         name=${name%.ebuild}
 	if iskeyword "${ebuild}" "${ARCH1}"; then
-		if docker run --mount type=bind,src="${distdir}",dst=/var/cache/distfiles --mount type=bind,src="${pkdir}",dst=/var/cache/binpkgs \
+		if docker run --mount type=bind,src="${distdir}",dst=/var/cache/distfiles --mount type=bind,src="${pkgdir}",dst=/var/cache/binpkgs \
 		--rm --name "${name}" dev \
 		/bin/bash -c "emerge -oubk ${atom} && export FEATURES=test && emerge -f ${atom} && emerge --quiet n ${atom}"; then
 			echo "INFO: ${atom} passed"
