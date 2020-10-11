@@ -30,7 +30,9 @@ case ${TRAVIS_CPU_ARCH} in
 		;;
 esac
 
-FILES=$(git --no-pager diff --name-only --diff-filter=ACMR "${TRAVIS_BRANCH}"...HEAD | grep -e "${PACKAGE}.*\.ebuild")
+git remote set-branches --add origin master
+git fetch
+FILES=$(git --no-pager diff --name-only --diff-filter=ACMR origin/master...HEAD | grep -e "${PACKAGE}.*\.ebuild")
 if [ "${FILES}" = "" ]; then
 	echo "SUCCESS: ${PACKAGE} not modified"
 	exit 0
