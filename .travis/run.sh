@@ -1,14 +1,7 @@
 #!/bin/bash
-
-TESTS="test"
-
 if ! test -d "${PACKAGE}"; then
 	echo "WARNING: ${PACKAGE} not found in repository"
 	exit 0
-fi
-
-if [ "${TESTS}" = "-test" ]; then
-	echo "INFO: skipping tests for ${PACKAGE}"
 fi
 
 case ${TRAVIS_CPU_ARCH} in
@@ -57,7 +50,10 @@ else
 	REPONAME=$(cat profiles/repo_name)
 fi
 
-mkdir -p .tmpfiles/distfiles
+mkdir -p ~/tmpfiles/distfiles
+distdir=$(readlink -f ~/tmpfiles/distfiles)
+mkdir -p ~/cache/binpkgs
+pkgdir=$(readlink -f ~/cache/binpkgs)
 tar cf .travis/overlay.tar .
 wget -O - https://github.com/gentoo/gentoo/archive/master.tar.gz | tar xfz - -C .travis/
 echo \
@@ -78,11 +74,10 @@ for ebuild in ${FILES}; do
         atom=${atom%.ebuild}
         name=$(basename "${ebuild}")
         name=${name%.ebuild}
-	distpath=$(readlink -f .tmpfiles/distfiles)
 	if iskeyword "${ebuild}" "${ARCH1}"; then
-		if docker run --mount type=bind,src="${distpath}",dst=/var/cache/distfiles \
+		if docker run --mount type=bind,src="${distdir}",dst=/var/cache/distfiles --mount type=bind,src="${pkdir}",dst=/var/cache/binpkgs \
 		--rm --name "${name}" dev \
-		/bin/bash -c "emerge -ou ${atom} && export FEATURES=${TESTS} && emerge -f ${atom} && emerge --quiet n ${atom}"; then
+		/bin/bash -c "emerge -oubk ${atom} && export FEATURES=test && emerge -f ${atom} && emerge --quiet n ${atom}"; then
 			echo "INFO: ${atom} passed"
 		else
 			echo "ERROR: ${atom} failed"
