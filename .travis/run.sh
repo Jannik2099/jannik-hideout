@@ -57,7 +57,6 @@ distdir=$(readlink -f ~/tmpfiles/distfiles)
 mkdir -p ~/cache/binpkgs
 pkgdir=$(readlink -f ~/cache/binpkgs)
 tar cf .travis/overlay.tar .
-wget -O - https://github.com/gentoo/gentoo/archive/master.tar.gz | tar xfz - -C .travis/
 echo \
 "[${REPONAME}]
 location = /var/db/repos/${REPONAME}
