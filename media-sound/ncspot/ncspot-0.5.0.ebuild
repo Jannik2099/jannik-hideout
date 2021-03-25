@@ -482,7 +482,6 @@ src_configure() {
 	local myfeatures=(
 	cursive/pancurses-backend
 	share_clipboard
-	cursive/pancurses-backend
 	mpris
 	cover
 
