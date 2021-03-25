@@ -28,9 +28,6 @@ BDEPEND="
 	man? ( app-text/asciidoc )
 "
 
-src_configure() {
-	local emesonargs=(
-		--prefix='/'
-	)
-	meson_src_configure
-}
+PATCHES=(
+"${FILESDIR}/${P}-fix-systemddir.patch"
+)
