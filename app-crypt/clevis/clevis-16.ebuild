@@ -17,6 +17,7 @@ IUSE="+tpm +man"
 
 DEPEND="
 	dev-libs/openssl:0=
+	dev-libs/libpwquality
 	dev-libs/luksmeta
 	tpm? ( app-crypt/tpm2-tools )
 "
