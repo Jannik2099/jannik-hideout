@@ -16,6 +16,7 @@ KEYWORDS="~amd64"
 IUSE="+tpm +man"
 
 DEPEND="
+	dev-libs/jose
 	dev-libs/openssl:0=
 	dev-libs/libpwquality
 	dev-libs/luksmeta
