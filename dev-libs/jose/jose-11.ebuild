@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit autotools
+inherit meson
 
 DESCRIPTION="C-language implementation of Javascript Object Signing and Encryption"
 HOMEPAGE="https://github.com/latchset/jose"
@@ -13,12 +13,10 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-DEPEND=""
+DEPEND="
+	sys-libs/zlib
+	dev-libs/jansson
+	dev-libs/openssl:=
+"
 RDEPEND="${DEPEND}"
-BDEPEND=""
-
-src_prepare() {
-	default
-	eautoreconf
-	eautomake
-}
+BDEPEND="app-text/asciidoc"
