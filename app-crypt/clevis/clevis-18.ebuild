@@ -13,7 +13,7 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 
-IUSE="+tpm +man"
+IUSE="+tpm"
 
 DEPEND="
 	dev-libs/jose
@@ -26,9 +26,9 @@ RDEPEND="
 	${DEPEND}
 	app-misc/jq"
 BDEPEND="
-	man? ( app-text/asciidoc )
+	app-text/asciidoc
 "
 
 PATCHES=(
-"${FILESDIR}/${P}-fix-systemddir.patch"
+"${FILESDIR}/clevis-fix-systemddir.patch"
 )
